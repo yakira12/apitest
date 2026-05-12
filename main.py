@@ -40,4 +40,19 @@ async def add_item(item: Item):
         items_database.append(item.model_dump())
     return {"items": items_database}
 
+@app.put("/items/update/")
+async def update_item(item : Item):
+    print("---------------In update item ------------")
+    if item is not None:
+        print(f"the item name is {item.name}")
+        print(f"the item price is {item.price}")
+        print(f"the item quantity is {item.quantity}")
+        for product in items_database:
+            if product["name"] == item.name:
+                print("-----------the item was found------------")
+                product["price"] = item.price
+                product["quantity"] = item.quantity
+                print("the item was updated")
+    return {"items": items_database}
+
 
