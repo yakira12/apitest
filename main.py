@@ -1,6 +1,16 @@
 from fastapi import FastAPI
 
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name :str
+    price : float
+    quantity: int
+
+
 app = FastAPI()
+
+items_database = []
 
 
 @app.get("/")
