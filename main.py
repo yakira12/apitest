@@ -1,6 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends, HTTPException, Query
 
 from pydantic import BaseModel
+
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+from typing import Annotated
+
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, connect_args=connect_args)
+
+
+
+
+
 
 class Item(BaseModel):
     id: int | None
@@ -8,8 +23,28 @@ class Item(BaseModel):
     price : float
     quantity: int
 
+class Product(SQLModel, table = True):
+    id: int = Field(primary_key=True)
+    name: str
+    price: float
+    quantity: int
 
+
+#create the tables
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+#will use the session to communicate to the engine
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
 app = FastAPI()
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 items_database = [{"id": 1 , "name": "Nike", "price": 1.99, "quantity": 2 }]
 
@@ -74,6 +109,11 @@ async def delete_item(item: Item, id: int):
                 items_database.remove(product)
                 print("the item was deleted")
     return {"items": items_database}
+
+
+
+
+
 
 
 
