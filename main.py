@@ -29,3 +29,15 @@ async def get_items():
     print("---------------In get items -----------")
     return {"items": items_database}
 
+@app.post("/items/add/")
+async def add_item(item: Item):
+    print("---------------In add item ------------")
+    if item is not None:
+        print(f"the item name is {item.name}")
+        print(f"the item price is {item.price}")
+        print(f"the item quantity is {item.quantity}")
+        print("----------adding the item to the database-------------")
+        items_database.append(item.model_dump())
+    return {"items": items_database}
+
+
