@@ -51,7 +51,7 @@ async def update_item(id: int, item: Item):
         print(f"the item price is {item.price}")
         print(f"the item quantity is {item.quantity}")
         for product in items_database:
-            if product["id"] == item.id:
+            if product["id"] == id:
                 print("-----------the item was found------------")
                 product["price"] = item.price
                 product["quantity"] = item.quantity
@@ -69,7 +69,7 @@ async def delete_item(item: Item, id: int):
         print(f"the item price is {item.price}")
         print(f"the item quantity is {item.quantity}")
         for product in items_database:
-            if product["id"] == item.id:
+            if product["id"] == id:
                 print("-----------the item was found------------")
                 items_database.remove(product)
                 print("the item was deleted")
