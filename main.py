@@ -56,3 +56,19 @@ async def update_item(item : Item):
     return {"items": items_database}
 
 
+@app.delete("/items/delete/")
+async def delete_item(item: Item):
+    print("---------------In delete item ------------")
+    if item is not None:
+        print(f"the item name is {item.name}")
+        print(f"the item price is {item.price}")
+        print(f"the item quantity is {item.quantity}")
+        for product in items_database:
+            if product["name"] == item.name:
+                print("-----------the item was found------------")
+                items_database.remove(product)
+                print("the item was deleted")
+    return {"items": items_database}
+
+
+
