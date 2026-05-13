@@ -119,6 +119,19 @@ async def get_product(session: SessionDep,
     product : list[Product] = session.exec(select(Product).offset(offset).limit(limit)).all()
     return product
 
+@app.post("/products/add/")
+async def add_product(product :Product, session : SessionDep) -> Product:
+    print("_____________In add product ------------------")
+    if product is not None:
+        print(f"The product name is {product.name}")
+        print(f"the poduct price is {product.price}")
+        print (f"The product quantity is {product.quantity}")
+        session.add(product)
+        session.commit()
+        #session.refresh(Product)
+        return {"product": product.model_dump()}
+
+
 
 
 
