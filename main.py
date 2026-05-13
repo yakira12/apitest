@@ -116,7 +116,8 @@ async def get_product(session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,) -> list[Product]:
     print("---------------In get product ------------")
-    produxt = session.exec(select(Product).offset(offset).limit(limit)).all()
+    product : list[Product] = session.exec(select(Product).offset(offset).limit(limit)).all()
+    return product
 
 
 
