@@ -148,6 +148,33 @@ async def get_product_by_name(session: SessionDep, name : str) -> Product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
+@app.put("/products/update/")
+async def update_product(product : Product, session : SessionDep) -> Product:
+    print("-------------In update product------------------")
+    if product is not None:
+        print(f"The product name is {product.name}")
+        print (f"the product price is {product.price}")
+        print(f"the product quantity is {product.quantity}")
+        cur_product = session.exec(select(Product).where(Product.name == product.name)).first()
+        #if the product is not found then insert the new product
+        if not cur_product:
+            print("----------The product was found. adding it to the database-------------")
+            session.add(product)
+            session.commit()
+            return {"product": product.model_dump()}
+        #otherwise update the existing product
+        print("----------The product was found. updating it -----------------------------")
+        cur_product.name = product.name
+        cur_product.price = product.price
+        cur_product.quantity = product.quantity
+        session.add(cur_product)
+        session.commit()
+        return {"product": product.model_dump()}
+
+
+
+
+
 
 
 
