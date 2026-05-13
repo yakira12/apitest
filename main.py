@@ -12,11 +12,6 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 connect_args = {"check_same_thread": False}
 engine = create_engine(sqlite_url, connect_args=connect_args)
 
-
-
-
-
-
 class Item(BaseModel):
     id: int | None
     name :str
@@ -170,6 +165,19 @@ async def update_product(product : Product, session : SessionDep) -> Product:
         session.add(cur_product)
         session.commit()
         return {"product": product.model_dump()}
+
+@app.delete("/products/delete/{id}/")
+async def delete_product_by_id(id: int, session : SessionDep) -> Product:
+    print("-------------In delete product by id --------------")
+    product : Product = session.exec(select(Product).where(Product.id == id)).first()
+
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    session.delete(product)
+    session.commit()
+
+    return {"product": product.model_dump()}
+
 
 
 
