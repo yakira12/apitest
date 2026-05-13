@@ -131,6 +131,16 @@ async def add_product(product :Product, session : SessionDep) -> Product:
         #session.refresh(Product)
         return {"product": product.model_dump()}
 
+@app.get("/products/get/{id}/")
+async def get_product_by_id(session: SessionDep, id : int ) -> Product:
+    print("--------------In get product by Id-----------")
+    product : Product = session.get(Product, id)
+    #product : Product = session.exec(select(Product).where(Product.id == id)).one()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
 
 
 
