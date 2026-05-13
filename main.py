@@ -111,6 +111,15 @@ async def delete_item(item: Item, id: int):
     return {"items": items_database}
 
 
+@app.get("/products/")
+async def get_product(session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,) -> list[Product]:
+    print("---------------In get product ------------")
+    produxt = session.exec(select(Product).offset(offset).limit(limit)).all()
+
+
+
 
 
 
