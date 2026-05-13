@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Item Welcome Page</title>
+</head>
+<body>
+    <div>
+        <h1>Restaurant Menu</h1>
+    </div>
+    <div>
+          {% for item in menu_items %}
+            <li>
+                item name: {{item.name}} <br>
+                item description : {{item.description}}<br>
+                item price: {{item.price}}<br>
+            </li>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

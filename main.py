@@ -1,10 +1,18 @@
-from fastapi import FastAPI,Depends, HTTPException, Query
+from fastapi import FastAPI,Depends, HTTPException, Query,Request
 
 from pydantic import BaseModel
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 from typing import Annotated
+
+#import to work with templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
+#template object
+templates = Jinja2Templates(directory="templates")
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -186,6 +194,19 @@ async def delete_product_by_id(id: int, session : SessionDep) -> Product:
     session.commit()
 
     return {"product": product.model_dump()}
+
+
+@app.get("/menuitems/", response_class = HTMLResponse)
+async def get_menu_items(session: SessionDep, request : Request):
+    print("-------------In get menu items ------------")
+    menu_items = session.exec(select(MenuItem)).all()
+    return templates.TemplateResponse(
+        request = request,
+        name = "MenuItems/menu_items.html",
+        context = {
+            "request": request,
+            "menu_items": menu_items
+        })
 
 
 
