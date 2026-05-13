@@ -24,6 +24,15 @@ class Product(SQLModel, table = True):
     price: float
     quantity: int
 
+class MenuItem(SQLModel,table = True):
+    id : int = Field(primary_key = True)
+    name: str
+    description: str
+    price : float
+
+
+
+
 
 #create the tables
 def create_db_and_tables():
