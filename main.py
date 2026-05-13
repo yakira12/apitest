@@ -140,6 +140,13 @@ async def get_product_by_id(session: SessionDep, id : int ) -> Product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
+@app.get("/products/name/{name}/")
+async def get_product_by_name(session: SessionDep, name : str) -> Product:
+    print("-------------In get product by name ----------")
+    product: Product = session.exec(select(Product).where(Product.name == name)).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
 
 
 
