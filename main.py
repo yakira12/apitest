@@ -9,7 +9,7 @@ from typing import Annotated
 #import to work with templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 #template object
 templates = Jinja2Templates(directory="templates")
@@ -37,6 +37,13 @@ class MenuItem(SQLModel,table = True):
     name: str
     description: str
     price : float
+
+class MenuItemFormData(BaseModel):
+    name : str
+    description : str
+    price : float
+
+
 
 
 
@@ -224,8 +231,28 @@ async def edit_item(request : Request, id: int, session: SessionDep):
     )
 
 
-@app.post("/menuitems/save/{id}", response_class = HTMLResponse)
-async def save_edited_item(id : int , request : Request, session : SessionDep, ):
+@app.post("/menuitems/save/{id}/", response_class = HTMLResponse)
+async def save_edited_item(id : int , request : Request, session : SessionDep,
+                           form_data : Annotated[MenuItemFormData, Form()]):
+
+    print("-------------In save edited item ------------")
+    print(f"--------The item id is {id}-----------")
+    print(f"--------The item description is {form_data.description}-----------")
+    print(f"--------The item price is {form_data.price}-----------")
+    print(f"--------The item name is {form_data.name}-----------")
+
+    # return templates.TemplateResponse(
+    #     request = request,
+    #     name  = "MenuItems/menu_items.html",
+    #     context = {
+    #         "request": request,
+    #         "id": id,
+    #     }
+
+    return RedirectResponse(url = "/menuitems/", status_code = 302)
+
+
+
 
 
 

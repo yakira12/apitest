@@ -11,11 +11,13 @@
 <div>
       <form action="{{ url_for('save_edited_item', id= dish.id) }}" method="post">
 
-        <label>item name:</label>
-        <input type="text" name="name" placeholder="{{ dish.name }}"><br>
+          <label>item name:</label>
+          <input type="text" name="name" placeholder="{{ dish.name }}"><br>
           <label> item description</label>
-          <input type="text" name="description" placeholder = "{{ dish.description}}">
-
+          <input type="text" name="description" placeholder = "{{ dish.description}}"><br>
+          <label>item price</label>
+          <input type="text" name="price" placeholder ="{{dish.price}}"><br>
+          <input type="submit">
 
       </form>
 </div>
