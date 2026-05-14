@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Depends, HTTPException, Query,Request
+from fastapi import FastAPI,Depends, HTTPException, Query,Request,Form
 
 from pydantic import BaseModel
 
@@ -207,6 +207,29 @@ async def get_menu_items(session: SessionDep, request : Request):
             "request": request,
             "menu_items": menu_items
         })
+
+@app.get("/menuitems/edit/{id}", response_class = HTMLResponse)
+async def edit_item(request : Request, id: int, session: SessionDep):
+    print("-------------In edit items ------------")
+    print(f"--------The item id is {id}-----------")
+    #get the item with the id
+    dish = session.get(MenuItem, id)
+    return templates.TemplateResponse(
+        request = request,
+        name = "MenuItems/edit_item.html",
+        context = {
+            "request": request,
+            "dish": dish
+        }
+    )
+
+
+@app.post("/menuitems/save/{id}", response_class = HTMLResponse)
+async def save_edited_item(id : int , request : Request, session : SessionDep, ):
+
+
+
+
 
 
 

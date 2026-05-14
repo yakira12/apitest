@@ -15,10 +15,11 @@
                 item description : {{item.description}}<br>
                 item price: {{item.price}}<br>
             </li>
+            <h3><a href="{{ url_for('edit_item', id = item.id ) }}">edit</a></h3>
+            <h3><a href="#">delete</a></h3>
         {% endfor %}
 
-        <button>edit</button>
-        <button>delete</button>
+
 
 
     </div>
