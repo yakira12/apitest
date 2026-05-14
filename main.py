@@ -215,7 +215,7 @@ async def get_menu_items(session: SessionDep, request : Request):
             "menu_items": menu_items
         })
 
-@app.get("/menuitems/edit/{id}", response_class = HTMLResponse)
+@app.get("/menuitems/edit/{id}/", response_class = HTMLResponse)
 async def edit_item(request : Request, id: int, session: SessionDep):
     print("-------------In edit items ------------")
     print(f"--------The item id is {id}-----------")
@@ -241,14 +241,15 @@ async def save_edited_item(id : int , request : Request, session : SessionDep,
     print(f"--------The item price is {form_data.price}-----------")
     print(f"--------The item name is {form_data.name}-----------")
 
-    # return templates.TemplateResponse(
-    #     request = request,
-    #     name  = "MenuItems/menu_items.html",
-    #     context = {
-    #         "request": request,
-    #         "id": id,
-    #     }
-
+    #With the submitted edit, let's save the changes
+    menu_item = session.exec(select(MenuItem).where(MenuItem.id == id)).first()
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="MenuItem not found")
+    menu_item.description = form_data.description
+    menu_item.price = form_data.price
+    menu_item.name = form_data.name
+    session.add(menu_item)
+    session.commit()
     return RedirectResponse(url = "/menuitems/", status_code = 302)
 
 
