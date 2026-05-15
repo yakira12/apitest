@@ -270,6 +270,8 @@ async def add_menu_item(request :Request, session : SessionDep):
     context = {
         "request": request
     })
+
+#This is to remove a menu item from the menu
 @app.get("/menuitems/delete/{id}/", response_class = HTMLResponse)
 async def delete_menu_item(id : int, session : SessionDep, request : Request ):
     print("-------------In delete menu items ------------")
