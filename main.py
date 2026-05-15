@@ -270,6 +270,16 @@ async def add_menu_item(request :Request, session : SessionDep):
     context = {
         "request": request
     })
+@app.get("/menuitems/delete/{id}/", response_class = HTMLResponse)
+async def delete_menu_item(id : int, session : SessionDep, request : Request ):
+    print("-------------In delete menu items ------------")
+    menu_item = session.get(MenuItem, id)
+    if not menu_item:
+        raise HTTPException(status_code=404, detail="MenuItem not found")
+    session.delete(menu_item)
+    session.commit()
+    return RedirectResponse(url = "/menuitems/", status_code = 302)
+
 
 
 
