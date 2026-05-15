@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add menu item</title>
+</head>
+<body>
+  <form action="{{ url_for('save_edited_item', id =0) }} " method="post">
+
+    <label>item name:</label>
+    <input type="text", placeholder="menu item name", name="name"> <br>
+    <label> item price:</label>
+    <input type="text", placeholder="menu price", name="price"><br>
+    <label> item description: </label>
+    <input type="text", placeholder=" description", name = "description"><br>
+    <input type="submit">
+
+
+  </form>
+
+</body>
+</html>

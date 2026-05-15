@@ -243,6 +243,14 @@ async def save_edited_item(id : int , request : Request, session : SessionDep,
 
     #With the submitted edit, let's save the changes
     menu_item = session.exec(select(MenuItem).where(MenuItem.id == id)).first()
+    if id == 0:
+        added_menu_item = MenuItem()
+        added_menu_item.description = form_data.description
+        added_menu_item.price = form_data.price
+        added_menu_item.name = form_data.name
+        session.add(added_menu_item)
+        session.commit()
+        return RedirectResponse(url="/menuitems/", status_code=302)
     if not menu_item:
         raise HTTPException(status_code=404, detail="MenuItem not found")
     menu_item.description = form_data.description
@@ -251,6 +259,17 @@ async def save_edited_item(id : int , request : Request, session : SessionDep,
     session.add(menu_item)
     session.commit()
     return RedirectResponse(url = "/menuitems/", status_code = 302)
+
+
+@app.get("/menuitems/add/", response_class = HTMLResponse)
+async def add_menu_item(request :Request, session : SessionDep):
+    print("-------------In add menu items ------------")
+    return templates.TemplateResponse(
+        request = request,
+    name = "MenuItems/add_menu_item.html",
+    context = {
+        "request": request
+    })
 
 
 
