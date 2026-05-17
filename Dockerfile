@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
+
 # Set the working directory inside the container
 WORKDIR /code
 
@@ -23,8 +25,11 @@ COPY ./requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 
+
 # Copy the application folder into the container
 COPY . /code/app
+
+#RUN chmod -R 777 /code/app/data
 
 # Expose the internal port that Uvicorn will listen on
 EXPOSE 8000
