@@ -35,8 +35,9 @@ COPY . /code/app
 EXPOSE 8000
 
 # Run Uvicorn when the container launches, optimized for container architectures
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT:8000}"]
+#CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT:8000}"]
 #CMD ["fastapi", "run"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
 
 
 
